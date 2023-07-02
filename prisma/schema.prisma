@@ -1,0 +1,323 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "sqlserver"
+  url      = env("DATABASE_URL")
+}
+
+model FNE {
+  FNE_COD             String    @id(map: "FNE_PK") @db.Char(6)
+  FNE_NOME_FANTASIA   String    @db.Char(40)
+  FNE_STATUS          String    @db.Char(1)
+  FNE_CLASSIFICACAO   Decimal?  @db.Decimal(1, 0)
+  FNE_TIPO            String    @db.Char(2)
+  FNE_DEL_LOGICA      String?   @db.Char(1)
+  FNE_DT_ULT_COMPRA   DateTime? @db.DateTime
+  FNE_CCT_COD         Decimal?  @db.Decimal(6, 0)
+  FNE_FATURA_MIN      Decimal?  @db.Decimal(12, 2)
+  FNE_CONCEITO        String?   @db.Char(50)
+  FNE_COD_EXTERNO     String?   @db.VarChar(20)
+  msrepl_tran_version String    @default(dbgenerated("newid()"), map: "MSrepl_tran_version_default_38CC1E11_18FA_4F15_A004_E019D3AE3DA3_1099150961") @db.UniqueIdentifier
+  fne_pontos_aval     Decimal?  @db.Decimal(10, 2)
+  fne_num_aut_func    String?   @db.VarChar(30)
+  fne_critico_ebm     String?   @db.Char(1)
+  fne_classific_ebm   String?   @db.VarChar(50)
+  fne_classifc_ebm    String?   @db.VarChar(50)
+
+  FIC_FIC_FIC_FNE_CODToFNE        FIC[] @relation("FIC_FIC_FNE_CODToFNE")
+  FIC_FIC_FIC_REV_FNE_TRANSPToFNE FIC[] @relation("FIC_FIC_REV_FNE_TRANSPToFNE")
+
+  MAT MAT[]
+}
+
+model FIC {
+  FIC_COP_SERIE                Int
+  FIC_COP_NUM                  Int
+  FIC_MAT_COD                  Int
+  FIC_FNE_COD                  String    @db.Char(6)
+  FIC_PRECO                    Decimal?  @db.Decimal(20, 10)
+  FIC_PRAZO_ENTREGA            Decimal   @db.Decimal(7, 0)
+  FIC_QTDE_COTADA              Decimal?  @db.Decimal(20, 10)
+  FIC_NFE_SERIE                String?   @db.VarChar(3)
+  FIC_NFE_NUM                  Int?
+  FIC_NUM_PARCELAS             Decimal?  @db.Decimal(7, 0)
+  FIC_INTERV_PARCELAS          Decimal?  @db.Decimal(7, 0)
+  FIC_PARC1_CRIT               String?   @db.VarChar(2)
+  FIC_PARC1_DIAS               Decimal?  @db.Decimal(7, 0)
+  FIC_DT_REG_COMPRA            DateTime? @db.DateTime
+  FIC_QTD_REG_COMPRA           Decimal?  @db.Decimal(20, 10)
+  FIC_QTDE_PENDENTE            Decimal?  @db.Decimal(20, 10)
+  FIC_FRETE                    String?   @db.VarChar(3)
+  FIC_OBS                      String?   @db.VarChar(255)
+  FIC_FATOR_CONV               Decimal?  @db.Decimal(10, 0)
+  FIC_VALOR_IPI                Decimal?  @db.Decimal(20, 10)
+  FIC_FRETE_VALOR              Decimal?  @db.Decimal(14, 2)
+  FIC_VALID_PROP               DateTime? @db.DateTime
+  FIC_ICP_SEQ                  Int
+  FIC_AFT_SERIE                Int?
+  FIC_AFT_NUM                  Int?
+  FIC_FNE_TRANSP               String?   @db.Char(6)
+  FIC_FNE_TRANSP_CONHEC        String?   @db.VarChar(10)
+  FIC_DESC_AF                  String?   @db.Text
+  FIC_REVISADA                 String?   @db.Char(1)
+  FIC_REV_PRECO_ORIG           Decimal?  @db.Decimal(20, 10)
+  FIC_REV_QTD_REG_COMPRA_ORIG  Decimal?  @db.Decimal(20, 10)
+  FIC_REV_VALOR_IPI_ORIG       Decimal?  @db.Decimal(20, 10)
+  FIC_REV_USR_LOGIN            String?   @db.Char(10)
+  FIC_REV_DTHR                 DateTime? @db.DateTime
+  FIC_REV_MOTIVO               String?   @db.VarChar(100)
+  FIC_DT_PREV_ENTREGA          DateTime? @db.DateTime
+  FIC_PERC_DESCONTO            Decimal?  @db.Decimal(10, 4)
+  FIC_REV_PERC_DESCONTO_ORIG   Decimal?  @db.Decimal(10, 4)
+  FIC_VLR_DESCONTO             Decimal?  @db.Decimal(10, 2)
+  FIC_REV_NUM_PARCELAS_ORIG    Decimal?  @db.Decimal(7, 0)
+  FIC_REV_INTERV_PARCELAS_ORIG Decimal?  @db.Decimal(7, 0)
+  FIC_REV_PARC1_DIAS_ORIG      Decimal?  @db.Decimal(7, 0)
+  FIC_REV_COND_PAG             String?   @db.Char(1)
+  FIC_REV_VLR_DESCONTO_ORIG    Decimal?  @db.Decimal(10, 2)
+  FIC_REV_PARC1_CRIT_ORIG      String?   @db.VarChar(2)
+  FIC_REV_FRETE_ORIG           String?   @db.VarChar(3)
+  FIC_VLR_DESC_FINAN           Decimal?  @db.Decimal(10, 2)
+  FIC_REV_VLR_DESC_FINAN_ORIG  Decimal?  @db.Decimal(10, 2)
+  FIC_VLR_DESC_FINAN_TIPO      String?   @db.VarChar(1)
+  FIC_REV_PRAZO_ENTREGA_ORIG   Decimal?  @db.Decimal(7, 0)
+  FIC_REV_FORNEC               String?   @db.Char(1)
+  FIC_REV_FNE_COD_OLD          String?   @db.Char(6)
+  FIC_REV_FRETE_VALOR_ORIG     Decimal?  @db.Decimal(14, 2)
+  FIC_DEL_LOGICA               String    @default("N", map: "DF__FIC__FIC_DEL_LOG__361203C5") @db.Char(1)
+  FIC_REV_FNE_TRANSP           String?   @db.Char(6)
+  FIC_OBS_AF                   String?   @db.VarChar(80)
+  FIC_IND_ATIVO_FIXO           String?   @db.Char(1)
+  FIC_BIONEXO_ID_ARTIGO        String?   @db.VarChar(30)
+  FIC_BIONEXO_PDC              String?   @db.VarChar(30)
+  FIC_DT_VALID                 DateTime? @db.DateTime
+  FIC_INFO_GARANTIA            String?   @db.VarChar(255)
+  FIC_ITEM_PRAZO_ENTREGA       Int?
+  FIC_ITEM_TP_PRAZO_ENTREGA    String?   @db.Char(1)
+  FIC_IND_EMPENHO              String?   @db.Char(1)
+  FIC_SERV_CPG_NUM             Int?
+  FIC_SERV_CPG_SERIE           Int?
+  fic_sintese_marca            String?   @db.VarChar(20)
+  fic_sintese_qt_emb           Decimal?  @db.Decimal(18, 0)
+  fic_sintese_cd_cotacao       String?   @db.VarChar(30)
+  fic_id                       Int       @default(0, map: "DF__FIC__fic_id__57DEA292")
+  fic_sintese_cd_oferta        String?   @db.VarChar(15)
+  fic_sintese_cd_oc            String?   @db.VarChar(30)
+  msrepl_tran_version          String    @default(dbgenerated("newid()"), map: "MSrepl_tran_version_default_014405C5_E9C2_40D9_B6F2_3015A431BF45_875150163") @db.UniqueIdentifier
+  fic_usr_login_reg_compra     String?   @db.Char(10)
+  fic_dthr_cotacao             DateTime? @db.DateTime
+  fic_usr_login_cotacao        String?   @db.Char(10)
+  fic_cod_simpro               String?   @db.VarChar(20)
+  fic_cod_anvisa               String?   @db.VarChar(20)
+  fic_cod_ref                  String?   @db.VarChar(20)
+  fic_cod_brasindice           String?   @db.VarChar(20)
+  fic_dt_validade_anvisa       DateTime? @db.DateTime
+  fic_sintese_cd_ref_marca     String?   @db.VarChar(50)
+  fic_mat_cpg_serie            Int?
+  fic_mat_cpg_num              Int?
+
+  COP                             COP  @relation(fields: [FIC_COP_SERIE, FIC_COP_NUM], references: [COP_SERIE, COP_NUM], onUpdate: NoAction, map: "fic_cop_fk")
+  FNE_FIC_FIC_FNE_CODToFNE        FNE  @relation("FIC_FIC_FNE_CODToFNE", fields: [FIC_FNE_COD], references: [FNE_COD], onUpdate: NoAction, map: "fic_fne_fk")
+  FNE_FIC_FIC_REV_FNE_TRANSPToFNE FNE? @relation("FIC_FIC_REV_FNE_TRANSPToFNE", fields: [FIC_REV_FNE_TRANSP], references: [FNE_COD], onDelete: NoAction, onUpdate: NoAction, map: "fic_fne_fk_4")
+  ICP                             ICP  @relation(fields: [FIC_COP_SERIE, FIC_COP_NUM, FIC_ICP_SEQ], references: [ICP_COP_SERIE, ICP_COP_NUM, ICP_SEQ], onUpdate: NoAction, map: "fic_icp_fk")
+  MAT                             MAT  @relation(fields: [FIC_MAT_COD], references: [MAT_COD], onUpdate: NoAction, map: "fic_mat_fk")
+
+  @@id([FIC_COP_SERIE, FIC_COP_NUM, FIC_FNE_COD, FIC_ICP_SEQ, fic_id], map: "FIC_PK")
+  @@index([FIC_AFT_SERIE, FIC_AFT_NUM], map: "FIC_AFT_IDX")
+  @@index([FIC_COP_SERIE, FIC_COP_NUM, FIC_FNE_COD], map: "fic_cop_idx")
+  @@index([FIC_DEL_LOGICA, FIC_COP_SERIE, FIC_COP_NUM, FIC_MAT_COD, FIC_FNE_COD, FIC_QTDE_PENDENTE, FIC_ICP_SEQ, FIC_AFT_SERIE, FIC_AFT_NUM], map: "FIC_DEL_LOGICA_IDX")
+  @@index([FIC_FNE_COD, FIC_QTDE_PENDENTE], map: "fic_fne_idx")
+  @@index([FIC_MAT_COD], map: "fic_mat_idx")
+  @@index([FIC_SERV_CPG_SERIE, FIC_SERV_CPG_NUM], map: "fic_serv_cpg_idx")
+}
+
+model COP {
+  COP_SERIE            Int
+  COP_NUM              Int
+  COP_DATA             DateTime  @db.DateTime
+  COP_USR_LOGIN        String    @db.Char(10)
+  COP_TIPO             String    @db.VarChar(2)
+  COP_GCC_COD          String?   @db.Char(3)
+  COP_OBS              String?   @db.VarChar(255)
+  COP_OBS_DTHR         DateTime? @db.DateTime
+  COP_OBS_USR_LOGIN    String?   @db.Char(10)
+  COP_OBS_COLETA       String?   @db.VarChar(255)
+  COP_DTHR_FIM_COTACAO DateTime? @db.DateTime
+  msrepl_tran_version  String    @default(dbgenerated("newid()"), map: "MSrepl_tran_version_default_4377904B_7FDD_45B6_AAC2_FBC4C312F0B7_1538104520") @db.UniqueIdentifier
+  COP_BIONEXO_PDC      String?   @db.VarChar(30)
+
+  FIC FIC[]
+  ICP ICP[]
+
+  @@id([COP_SERIE, COP_NUM], map: "COP_PK")
+  @@index([COP_DATA], map: "cop_dt_idx")
+}
+
+model ICP {
+  ICP_COP_SERIE        Int
+  ICP_COP_NUM          Int
+  ICP_SEQ              Int
+  ICP_MAT_COD          Int
+  ICP_QTDE_AGRUPADA    Decimal   @db.Decimal(12, 2)
+  ICP_DT_APLICACAO     DateTime? @db.DateTime
+  ICP_QUANT            Decimal?  @db.Decimal(20, 10)
+  ICP_PRIORIDADE       String?   @db.VarChar(2)
+  ICP_IND_APLIC_REP    String?   @db.VarChar(1)
+  ICP_FATOR_CONV       Decimal?  @db.Decimal(8, 0)
+  ICP_STATUS           String?   @db.Char(1)
+  ICP_MAT_DESC_EXTRA   String?   @db.VarChar(60)
+  ICP_OBS              String?   @db.VarChar(255)
+  ICP_UNM_COD          String?   @db.Char(8)
+  ICP_DTHR_STATUS      DateTime? @db.DateTime
+  ICP_USR_LOGIN_STATUS String?   @db.Char(10)
+  ICP_PARECER_TECNICO  String?   @db.VarChar(255)
+  icp_obs_status       String?   @db.VarChar(255)
+  msrepl_tran_version  String    @default(dbgenerated("newid()"), map: "MSrepl_tran_version_default_CF56A31A_3DC7_4442_AEFD_66E4327D7476_1479676319") @db.UniqueIdentifier
+  icp_gih_id           Int?
+  icp_cfo_cod          String?   @db.Char(5)
+  icp_str_cod          String?   @db.Char(3)
+  icp_cpi_cod          String?   @db.Char(8)
+  FIC                  FIC[]
+
+  COP COP @relation(fields: [ICP_COP_SERIE, ICP_COP_NUM], references: [COP_SERIE, COP_NUM], onUpdate: NoAction, map: "icp_cop_fk")
+  MAT MAT @relation(fields: [ICP_MAT_COD], references: [MAT_COD], onUpdate: NoAction, map: "icp_mat_fk")
+
+  @@id([ICP_COP_SERIE, ICP_COP_NUM, ICP_SEQ], map: "ICP_PK")
+  @@index([ICP_MAT_COD], map: "icp_mat_idx")
+}
+
+model MAT {
+  MAT_COD                      Int       @id(map: "MAT_PK")
+  MAT_DESC_COMPLETA            String    @db.Char(60)
+  MAT_DESC_RESUMIDA            String    @db.Char(40)
+  MAT_CONS_MEDIO               Decimal?  @db.Decimal(18, 2)
+  MAT_IND_CRITICIDADE          String    @db.Char(1)
+  MAT_IND_CURVA_ABC            String    @db.Char(1)
+  MAT_IND_REUTILIZAVEL         String?   @db.Char(1)
+  MAT_IND_CONTROLADO           String?   @db.Char(1)
+  MAT_IND_ESTERILIZAVEL        String?   @db.Char(1)
+  MAT_DEL_LOGICA               String    @default("N", map: "DF__MAT__MAT_DEL_LOG__70C8B53F") @db.Char(1)
+  MAT_TEMP_ESTOCAGEM           Decimal?  @db.Decimal(4, 2)
+  MAT_PT_RESSUPRIMENTO         Decimal?  @db.Decimal(8, 2)
+  MAT_PT_SEGURANCA             Decimal?  @db.Decimal(8, 2)
+  MAT_DTHR_ULT_ENTRADA         DateTime? @db.DateTime
+  MAT_DTHR_ULT_SAIDA           DateTime? @db.DateTime
+  MAT_SBA_COD                  String    @db.Char(6)
+  MAT_UNM_COD_ENTRADA          String    @db.Char(8)
+  MAT_UNM_COD_SAIDA            String    @db.Char(8)
+  MAT_LMA_COD                  String    @db.Char(5)
+  MAT_GMM_COD                  String    @db.Char(3)
+  MAT_CTF_TIPO                 String?   @db.Char(1)
+  MAT_SMK_COD                  String?   @db.Char(8)
+  MAT_DESC_EXTENDIDA           String?   @db.Text
+  MAT_PRC_ULT_ENTRADA          Decimal?  @db.Decimal(20, 10)
+  MAT_UNM_VENDA                String?   @db.Char(8)
+  MAT_FAT_CONV_S_V             Decimal   @db.Decimal(10, 4)
+  MAT_PRC_LISTA                Decimal?  @db.Decimal(10, 2)
+  MAT_TIPO_PRC                 String?   @db.VarChar(1)
+  MAT_IND_APLIC_DIRETA         String    @db.VarChar(1)
+  MAT_IND_CONSIGNADO           String    @db.VarChar(1)
+  MAT_SMK_TIPO                 String?   @db.VarChar(1)
+  MAT_VLR_PM                   Decimal   @db.Decimal(20, 10)
+  MAT_VLR_PM_CORRIGIDO         Decimal?  @db.Decimal(20, 10)
+  MAT_MARK_UP                  Decimal?  @db.Decimal(5, 2)
+  MAT_TIPO_PRECO               String?   @db.Char(3)
+  MAT_TEMP_ESTOC_MAX           Decimal?  @db.Decimal(4, 2)
+  MAT_ESTOQ_MAXIMO             Decimal?  @db.Decimal(18, 2)
+  MAT_ESTOCAGEM                String?   @db.Text
+  MAT_MANUSEIO                 String?   @db.Text
+  MAT_EXIGE_CERTIFIC           Decimal?  @db.Decimal(4, 0)
+  MAT_TEMPO_RSP                Decimal?  @db.Decimal(10, 4)
+  MAT_COD_INTERNO              String?   @db.VarChar(30)
+  MAT_LOCAL                    String?   @db.VarChar(100)
+  MAT_DESC_ETIQUETA            String?   @db.VarChar(40)
+  MAT_IND_COBRANCA             String?   @db.Char(1)
+  MAT_CONS_DIARIO              Decimal?  @db.Decimal(8, 2)
+  MAT_INTERV_RESSUP            Decimal?  @db.Decimal(10, 4)
+  MAT_PERC_TOLERA              Decimal?  @db.Decimal(8, 2)
+  MAT_FNE_ULT_ENTRADA          String?   @db.Char(6)
+  MAT_IND_PERECIVEL            String?   @db.Char(1)
+  MAT_GCP_COD                  String?   @db.Char(3)
+  MAT_IND_FRACIONADO           String?   @db.Char(1)
+  MAT_VLR_PM_UN_ENT            Decimal?  @db.Decimal(10, 4)
+  MAT_PRC_ULT_ENT_UN_ENT       Decimal?  @db.Decimal(20, 10)
+  MAT_VLR_PM_CURVA_ABC         Decimal?  @db.Decimal(20, 10)
+  MAT_QT_EST_ATUAL             Decimal?  @db.Decimal(10, 0)
+  MAT_IND_OSCILANTE            String?   @db.Char(1)
+  MAT_IND_EXIGE_LOTE           String?   @db.Char(1)
+  MAT_IND_ESTRATEGICO          String?   @db.Char(1)
+  MAT_IND_SUSPENDER_COMPRAR    String    @db.Char(1)
+  MAT_IND_PADRONIZADO          String    @db.Char(1)
+  MAT_AFT_SERIE_CONSIG         Int?
+  MAT_AFT_NUM_CONSIG           Int?
+  MAT_PRAZO_ENT_CONSIG         Int?
+  MAT_IMPOSTO_CONSIG           Decimal?  @db.Decimal(20, 10)
+  MAT_QTDE_EMP_CONSIG          Decimal?  @db.Decimal(10, 0)
+  MAT_DTHR_CAD                 DateTime? @db.DateTime
+  MAT_IND_IMPORTADO            String?   @db.Char(1)
+  MAT_OBS                      String?   @db.VarChar(255)
+  MAT_IND_ROUPA                String?   @db.Char(1)
+  MAT_IND_KIT                  String?   @db.Char(1)
+  MAT_QTD_ULT_ENTRADA          Decimal?  @db.Decimal(14, 2)
+  MAT_IND_COFINS               String    @default("N", map: "DF__MAT__MAT_IND_COF__71BCD978") @db.Char(1)
+  MAT_IND_CALC_MANUAL          String    @default("N", map: "DF__MAT__MAT_IND_CAL__72B0FDB1") @db.Char(1)
+  MAT_ABC_FARMA                String?   @db.VarChar(9)
+  MAT_COD_SIASG                String?   @db.VarChar(15)
+  MAT_COD_BIONEXO              String?   @db.VarChar(20)
+  MAT_COD_SIMPAS               String?   @db.VarChar(20)
+  MAT_FAT_CONV_FRAC            Decimal   @default(1, map: "DF__MAT__MAT_FAT_CON__3EF22DE0") @db.Decimal(20, 10)
+  MAT_IND_INFO_VIA             String    @default("N", map: "DF__MAT__MAT_IND_INF__3FE65219") @db.Char(1)
+  MAT_IND_TRAVA_EM             String    @default("N", map: "DF__MAT__MAT_IND_TRA__40DA7652") @db.Char(1)
+  MAT_ESTABILIDADE             Decimal?  @db.Decimal(6, 0)
+  MAT_IND_KIT_REAG             String?   @db.Char(1)
+  MAT_KIT_LAB_QT_TESTES        Int?
+  MAT_COD_PHARMABUY            String?   @db.VarChar(20)
+  mat_ind_manuseio_popup       String    @default("N", map: "DF__MAT__mat_ind_man__540E11AE") @db.Char(1)
+  mat_estabilidade_escala      String    @default("D", map: "DF__MAT__mat_estabil__78D58209") @db.Char(1)
+  mat_estab_rec                Decimal?  @db.Decimal(6, 0)
+  mat_estab_rec_escala         String    @default("D", map: "DF__MAT__mat_estab_r__2A8CD92E") @db.Char(1)
+  mat_cod_anvisa               String?   @db.VarChar(20)
+  mat_ind_consig_mult          String    @default("N", map: "DF__MAT__mat_ind_con__0AEC72A8") @db.Char(1)
+  mat_bionexo_und_ent          String    @default("N", map: "DF__MAT__mat_bionexo__3092F8A3") @db.Char(1)
+  mat_obs_falta                String?   @db.VarChar(255)
+  msrepl_tran_version          String    @default(dbgenerated("newid()"), map: "MSrepl_tran_version_default_0B57E978_5F07_4511_9BEE_3AB78F5C57C0_1860201677") @db.UniqueIdentifier
+  mat_prazo_dias_valid_receb   Int?
+  mat_ind_etq_baixa            String    @default("S", map: "DF__MAT__mat_ind_etq__43172AF2") @db.Char(1)
+  mat_ind_sobra_lacrada        String    @default("N", map: "DF__MAT__mat_ind_sob__64CD2478") @db.Char(1)
+  mat_trak_fracionado          String    @default("N", map: "DF__MAT__mat_trak_fr__630FC48F") @db.Char(1)
+  mat_trak_checavel            String    @default("S", map: "DF__MAT__mat_trak_ch__6403E8C8") @db.Char(1)
+  mat_bionexo_ind_alternativa  String    @default("S", map: "DF__MAT__mat_bionexo__6F959705") @db.Char(1)
+  mat_cod_ref_fabric           String?   @db.VarChar(30)
+  mat_ind_ativo_fixo           String?   @db.Char(1)
+  mat_ptg_cod                  String?   @db.Char(5)
+  mat_prazo_dias_valid_consumo Int?
+  mat_ind_cred_pis_cofins      String    @default("N", map: "DF__MAT__mat_ind_cre__46B37D03") @db.Char(1)
+  mat_cred_cfop_cod            String?   @db.VarChar(10)
+  mat_cred_pis_cst_cod         String?   @db.VarChar(10)
+  mat_cred_cofins_cst_cod      String?   @db.VarChar(10)
+  mat_cred_pis_aliq            Decimal?  @db.Decimal(10, 4)
+  mat_cred_cofins_aliq         Decimal?  @db.Decimal(10, 4)
+  mat_ncm_cod                  String?   @db.VarChar(30)
+  mat_tp_ester                 String?   @db.Char(1)
+  mat_ester_estab              Int?
+  mat_ester_estab_escala       String?   @db.Char(1)
+  mat_ester_mat_cod            Int?
+  mat_ester_qtd                Int?
+  mat_mlok_tp_devolucao        String?   @db.Char(1)
+  mat_gerac_aut                String?   @db.Char(1)
+  MAT_IMG_COD                  Decimal?  @db.Decimal(8, 0)
+
+  FIC FIC[]
+
+  ICP ICP[]
+
+  MAT       MAT?  @relation("MATToMAT", fields: [mat_ester_mat_cod], references: [MAT_COD], onDelete: NoAction, onUpdate: NoAction, map: "mat_ester_mat_fk")
+  other_MAT MAT[] @relation("MATToMAT")
+  FNE       FNE?  @relation(fields: [MAT_FNE_ULT_ENTRADA], references: [FNE_COD], onDelete: NoAction, onUpdate: NoAction, map: "mat_fne_fk")
+
+  @@index([MAT_DEL_LOGICA, MAT_IND_ROUPA, MAT_COD, MAT_DESC_RESUMIDA, MAT_SBA_COD, MAT_SMK_COD, MAT_IND_APLIC_DIRETA, MAT_IND_CONSIGNADO, MAT_IND_COBRANCA, MAT_IND_SUSPENDER_COMPRAR], map: "mat_del_logica_ind_roupa_idx")
+  @@index([MAT_COD_SIASG], map: "mat_siasg_idx")
+  @@index([MAT_SMK_COD], map: "mat_smk_idx")
+}
