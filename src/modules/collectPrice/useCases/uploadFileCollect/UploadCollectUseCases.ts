@@ -43,12 +43,15 @@ export class UploadCollectUseCase {
           ICP_MAT_COD: collectMaterial,
           ICP_QTDE_AGRUPADA: 0,
           ICP_QUANT: collectQuantity,
+          ICP_STATUS: "A",
+          ICP_FATOR_CONV: 1,
           FIC: {
             create: {
               FIC_MAT_COD: collectMaterial,
               FIC_FNE_COD: collectSuppliers,
               FIC_PRAZO_ENTREGA: 0,
               FIC_QTDE_COTADA: collectQuantity,
+              FIC_FATOR_CONV: 1,
             },
           },
         },

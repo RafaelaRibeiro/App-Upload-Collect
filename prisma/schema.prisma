@@ -147,6 +147,7 @@ model COP {
   COP_DTHR_FIM_COTACAO DateTime? @db.DateTime
   msrepl_tran_version  String    @default(dbgenerated("newid()"), map: "MSrepl_tran_version_default_4377904B_7FDD_45B6_AAC2_FBC4C312F0B7_1538104520") @db.UniqueIdentifier
   COP_BIONEXO_PDC      String?   @db.VarChar(30)
+  USR                  USR       @relation(fields: [COP_USR_LOGIN], references: [USR_LOGIN], onUpdate: NoAction, map: "cop_usr_fk")
 
   FIC FIC[]
   ICP ICP[]
@@ -181,8 +182,9 @@ model ICP {
   icp_cpi_cod          String?   @db.Char(8)
   FIC                  FIC[]
 
-  COP COP @relation(fields: [ICP_COP_SERIE, ICP_COP_NUM], references: [COP_SERIE, COP_NUM], onUpdate: NoAction, map: "icp_cop_fk")
-  MAT MAT @relation(fields: [ICP_MAT_COD], references: [MAT_COD], onUpdate: NoAction, map: "icp_mat_fk")
+  COP COP  @relation(fields: [ICP_COP_SERIE, ICP_COP_NUM], references: [COP_SERIE, COP_NUM], onUpdate: NoAction, map: "icp_cop_fk")
+  MAT MAT  @relation(fields: [ICP_MAT_COD], references: [MAT_COD], onUpdate: NoAction, map: "icp_mat_fk")
+  USR USR? @relation(fields: [ICP_USR_LOGIN_STATUS], references: [USR_LOGIN], onDelete: NoAction, onUpdate: NoAction, map: "icp_usr_fk_2")
 
   @@id([ICP_COP_SERIE, ICP_COP_NUM, ICP_SEQ], map: "ICP_PK")
   @@index([ICP_MAT_COD], map: "icp_mat_idx")
@@ -320,4 +322,95 @@ model MAT {
   @@index([MAT_DEL_LOGICA, MAT_IND_ROUPA, MAT_COD, MAT_DESC_RESUMIDA, MAT_SBA_COD, MAT_SMK_COD, MAT_IND_APLIC_DIRETA, MAT_IND_CONSIGNADO, MAT_IND_COBRANCA, MAT_IND_SUSPENDER_COMPRAR], map: "mat_del_logica_ind_roupa_idx")
   @@index([MAT_COD_SIASG], map: "mat_siasg_idx")
   @@index([MAT_SMK_COD], map: "mat_smk_idx")
+}
+
+model USR {
+  USR_LOGIN                   String    @id(map: "USR_PK") @db.Char(10)
+  USR_COD                     Int       @db.SmallInt
+  USR_GRP                     String    @db.Char(3)
+  USR_PSV                     Int?
+  USR_NOME                    String    @db.Char(20)
+  USR_SENHA                   String?   @db.Char(30)
+  USR_NIVEL                   String?   @db.Char(1)
+  USR_EPSV                    String?   @db.Char(1)
+  USR_STR_COD                 String?   @db.Char(3)
+  USR_QUER_DICAS              String?   @db.Char(1)
+  USR_IND_COMPRADOR           String?   @db.VarChar(1)
+  USR_IND_AUTORIZA_COMPRA     String?   @db.VarChar(1)
+  USR_LIMITE_COMPRA           Decimal?  @db.Decimal(8, 2)
+  USR_STATUS                  String?   @db.Char(1)
+  USR_IND_COMPRA_CURVA_ABC    String?   @db.Char(1)
+  USR_CCR_COD_RECEP           String?   @db.Char(5)
+  USR_PAGER                   String?   @db.VarChar(20)
+  USR_DT_NASC                 DateTime? @db.DateTime
+  USR_SEXO                    String?   @db.Char(1)
+  USR_FONE                    String?   @db.VarChar(14)
+  USR_CELULAR                 String?   @db.VarChar(14)
+  USR_EMAIL                   String?   @db.VarChar(100)
+  USR_CPF                     String?   @db.VarChar(12)
+  USR_RG                      String?   @db.VarChar(15)
+  USR_END                     String?   @db.VarChar(40)
+  USR_COMP                    String?   @db.VarChar(40)
+  USR_CEP                     String?   @db.VarChar(9)
+  USR_CDE_COD                 Decimal?  @db.Decimal(6, 0)
+  USR_IND_AUTORIZA_SR         String?   @db.Char(1)
+  USR_IND_RECEB_MSG_AUTO      String    @default("S", map: "DF__USR__USR_IND_REC__2B4A5C8F") @db.Char(1)
+  USR_IMG_COD_FOTO            Decimal?  @db.Decimal(8, 0)
+  USR_COMPRADOR_FAX           String?   @db.VarChar(14)
+  USR_COMPRADOR_FONE          String?   @db.VarChar(14)
+  USR_LIMITE_COMPRA_BASE      Decimal?  @db.Decimal(8, 2)
+  USR_DT_ALTER_SENHA          DateTime? @db.DateTime
+  USR_IND_SENHA_EXPIRA        String    @default("N", map: "DF__USR__USR_IND_SEN__08EB22EA") @db.Char(1)
+  USR_MATRIC_RH               String?   @db.VarChar(30)
+  USR_SENHA_HASH              String?   @db.VarChar(32)
+  USR_SENHA_PACS              String?   @db.VarChar(30)
+  USR_CORREIO_ASS             String?   @db.VarChar(255)
+  usr_cod_externo             String?   @db.VarChar(100)
+  usr_ind_valid               String?   @db.Char(1)
+  usr_dthr_valid              DateTime? @db.DateTime
+  usr_login_fail_count        Int       @default(0, map: "DF__USR__usr_login_f__3C36881D")
+  usr_tx_user_dic             Decimal?  @db.Decimal(8, 0)
+  usr_cp_prazo_venc           Int?
+  usr_nome_completo           String?   @db.VarChar(50)
+  usr_gmg_cod                 Int?
+  msrepl_tran_version         String    @default(dbgenerated("newid()"), map: "MSrepl_tran_version_default_BB850DCD_E63F_4859_989C_9AA1F7733976_694293533") @db.UniqueIdentifier
+  usr_fila_tcm_cod            String?   @db.VarChar(5)
+  usr_fila_cmt_cod            String?   @db.VarChar(5)
+  usr_comprador_mail          String?   @db.VarChar(100)
+  usr_usa_apliccs             String?   @db.Char(1)
+  usr_limite_compra_diario    Decimal?  @db.Decimal(8, 2)
+  usr_primeiro_login          String    @default("N", map: "DF__USR__usr_primeir__4930C252") @db.Char(1)
+  usr_ind_duplo_fator         String?   @db.Char(1)
+  usr_ultima_senha            String?   @db.VarChar(255)
+  usr_novo                    String?   @db.Char(1)
+  usr_ind_integracao_pacs     String?   @default("S", map: "DF__USR__usr_ind_int__326E23E2") @db.Char(1)
+  usr_login_res_unimed        String?   @db.VarChar(70)
+  usr_ind_msg_termo_res       String?   @db.Char(1)
+  usr_login_rede              String?   @db.VarChar(30)
+  usr_token_email             String?   @db.VarChar(300)
+  usr_dt_aceite_termo_uso     DateTime? @db.DateTime
+  usr_ind_delegar             String?   @db.Char(1)
+  usr_sob_supervisao          String?   @default("N", map: "DF__USR__usr_sob_sup__44ECC6D0") @db.Char(1)
+  usr_surpervisor             String?   @db.Char(10)
+  usr_psv_surpervisor         Int?
+  usr_utc                     String?   @db.VarChar(20)
+  usr_ind_verao               String?   @db.Char(1)
+  usr_dt_last_login           DateTime? @db.DateTime
+  usr_dt_last_login_fail      DateTime? @db.DateTime
+  usr_utc_last_fail           String?   @db.VarChar(30)
+  USR_END_CEP_TIT             String?   @db.VarChar(3)
+  usr_ssu                     Int?
+  usr_salt_hash               String?   @db.VarChar(255)
+  usr_ultimo_ssu              String?   @db.VarChar(3)
+  USR_IND_BOASVINDAS_FACELIFT String?   @default("N", map: "DF_USR_IND_BOASVINDAS_FACELIFT") @db.Char(1)
+  USR_SENHA_EXATO             String    @db.VarChar(16)
+
+  COP COP[]
+
+  ICP ICP[]
+
+  @@index([usr_cod_externo], map: "ix_usr_cod_externo_Includes")
+  @@index([USR_COD], map: "usr_cod_idx")
+  @@index([USR_PSV], map: "usr_psv_include_idx")
+  @@index([USR_LOGIN, USR_PSV, USR_STR_COD], map: "USR_PSV_STR_IDX")
 }
