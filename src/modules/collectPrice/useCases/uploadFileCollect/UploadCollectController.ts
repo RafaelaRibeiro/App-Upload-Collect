@@ -10,7 +10,7 @@ export class UploadCollectController {
       const { buffer } = file;
       const uploadCollectUseCase = new UploadCollectUseCase();
 
-      const result = uploadCollectUseCase.execute(
+      const result = await uploadCollectUseCase.execute(
         buffer,
         collectSerie as string,
         collectNum as string

@@ -403,7 +403,7 @@ model USR {
   usr_salt_hash               String?   @db.VarChar(255)
   usr_ultimo_ssu              String?   @db.VarChar(3)
   USR_IND_BOASVINDAS_FACELIFT String?   @default("N", map: "DF_USR_IND_BOASVINDAS_FACELIFT") @db.Char(1)
-  USR_SENHA_EXATO             String    @db.VarChar(16)
+  USR_SENHA_EXATO             String?   @db.VarChar(255)
 
   COP COP[]
 
